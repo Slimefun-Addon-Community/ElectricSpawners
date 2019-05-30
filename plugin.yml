@@ -1,7 +1,0 @@
-name: ElectricSpawners
-version: 1.0
-author: mrCookieSlime
-website: http://thebusybiscuit.github.io/
-depend: [CS-CoreLib, Slimefun]
-
-main: me.mrCookieSlime.ElectricSpawners.ElectricSpawners

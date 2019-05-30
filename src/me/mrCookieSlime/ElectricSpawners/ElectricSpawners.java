@@ -4,7 +4,6 @@ import me.mrCookieSlime.CSCoreLibPlugin.PluginUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
-import me.mrCookieSlime.ElectricSpawners.ElectricSpawner.SpecialAttribute;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.Research;
 import me.mrCookieSlime.Slimefun.api.Slimefun;
@@ -33,21 +32,11 @@ public class ElectricSpawners extends JavaPlugin implements Listener {
 		Research research = new Research(4820, "Powered Spawners", 30);
 		
 		for (String mob: cfg.getStringList("mobs")) {
-			if (mob.equals("WITHER_SKELETON")) {
-				try {
-					new ElectricSpawner(category, mob, EntityType.SKELETON, research, SpecialAttribute.WITHER_SKELETON)
-					.registerChargeableBlock(false, 2048);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			else {
-				try {
-					EntityType type = EntityType.valueOf(mob);
-					new ElectricSpawner(category, mob, type, research, SpecialAttribute.NONE).registerChargeableBlock(false, 2048);
-				} catch(Exception x) {
-					System.err.println("[ElectricSpawners] " + x.getClass().getName() + ": " + mob);
-				}
+			try {
+				EntityType type = EntityType.valueOf(mob);
+				new ElectricSpawner(category, mob, type, research).registerChargeableBlock(false, 2048);
+			} catch(Exception x) {
+				System.err.println("[ElectricSpawners] " + x.getClass().getName() + ": " + mob);
 			}
 		}
 		

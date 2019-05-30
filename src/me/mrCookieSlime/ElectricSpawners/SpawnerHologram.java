@@ -2,12 +2,12 @@ package me.mrCookieSlime.ElectricSpawners;
 
 import java.util.List;
 
-import me.mrCookieSlime.Slimefun.holograms.ArmorStandFactory;
-
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+
+import me.mrCookieSlime.CSCoreLibPlugin.general.World.ArmorStandFactory;
 
 public class SpawnerHologram {
 	
