@@ -1,4 +1,4 @@
-package me.mrCookieSlime.ElectricSpawners;
+package io.github.thebusybiscuit.electricspawners;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.CSCoreLibPlugin.general.String.StringUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
@@ -60,15 +59,7 @@ public class ElectricSpawner extends SlimefunItem {
 			public void init() {
 				for (int i = 0; i < 9; i++) {
 					if (i != 4) {
-						addItem(i, new CustomItem(Material.LIGHT_GRAY_STAINED_GLASS_PANE, " "),
-						new MenuClickHandler() {
-
-							@Override
-							public boolean onClick(Player arg0, int arg1, ItemStack arg2, ClickAction arg3) {
-								return false;
-							}
-									
-						});
+						addItem(i, new CustomItem(Material.LIGHT_GRAY_STAINED_GLASS_PANE, " "), (p, slot, item, action) -> false);
 					}
 				}
 			}
@@ -77,26 +68,18 @@ public class ElectricSpawner extends SlimefunItem {
 			public void newInstance(final BlockMenu menu, final Block b) {
 				if (!BlockStorage.hasBlockInfo(b) || BlockStorage.getLocationInfo(b.getLocation(), "enabled") == null || BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals("false")) {
 					menu.replaceExistingItem(4, new CustomItem(Material.GUNPOWDER, "&7Enabled: &4\u2718", "", "&e> Click to enable this Machine"));
-					menu.addMenuClickHandler(4, new MenuClickHandler() {
-
-						@Override
-						public boolean onClick(Player p, int arg1, ItemStack arg2, ClickAction arg3) {
-							BlockStorage.addBlockInfo(b, "enabled", "true");
-							newInstance(menu, b);
-							return false;
-						}
+					menu.addMenuClickHandler(4, (p, slot, item, action) -> {
+						BlockStorage.addBlockInfo(b, "enabled", "true");
+						newInstance(menu, b);
+						return false;
 					});
 				}
 				else {
 					menu.replaceExistingItem(4, new CustomItem(Material.REDSTONE, "&7Enabled: &2\u2714", "", "&e> Click to disable this Machine"));
-					menu.addMenuClickHandler(4, new MenuClickHandler() {
-
-						@Override
-						public boolean onClick(Player p, int arg1, ItemStack arg2, ClickAction arg3) {
-							BlockStorage.addBlockInfo(b, "enabled", "false");
-							newInstance(menu, b);
-							return false;
-						}
+					menu.addMenuClickHandler(4, (p, slot, item, action) -> {
+						BlockStorage.addBlockInfo(b, "enabled", "false");
+						newInstance(menu, b);
+						return false;
 					});
 				}
 			}
@@ -156,7 +139,6 @@ public class ElectricSpawner extends SlimefunItem {
 		for (Entity n: SpawnerHologram.getNearbyEntities(b, 4)) {
 			if (n.getType().equals(this.entity)) {
 				count++;
-				
 				if (count > 6) return;
 			}
 		}

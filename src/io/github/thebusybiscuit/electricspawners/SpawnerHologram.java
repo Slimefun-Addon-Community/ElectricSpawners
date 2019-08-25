@@ -1,4 +1,4 @@
-package me.mrCookieSlime.ElectricSpawners;
+package io.github.thebusybiscuit.electricspawners;
 
 import java.util.List;
 

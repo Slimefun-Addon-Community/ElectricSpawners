@@ -6,4 +6,4 @@ depend: [CS-CoreLib, Slimefun]
 
 api-version: 1.13
 
-main: me.mrCookieSlime.ElectricSpawners.ElectricSpawners
+main: io.github.thebusybiscuit.electricspawners.ElectricSpawners
