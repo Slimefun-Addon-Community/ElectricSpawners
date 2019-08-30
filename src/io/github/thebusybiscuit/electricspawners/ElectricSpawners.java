@@ -58,6 +58,7 @@ public class ElectricSpawners extends JavaPlugin implements Listener {
 				new ElectricSpawner(category, mob, type, research).registerChargeableBlock(false, 2048);
 			} catch(Exception x) {
 				System.err.println("[ElectricSpawners] " + x.getClass().getName() + ": " + mob);
+				x.printStackTrace();
 			}
 		}
 		
