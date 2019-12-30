@@ -1,9 +1,8 @@
 name: ElectricSpawners
 version: ${project.version}
-author: mrCookieSlime
-website: http://thebusybiscuit.github.io/
-depend: [CS-CoreLib, Slimefun]
+author: TheBusyBiscuit
+depend: [Slimefun]
 
-api-version: 1.13
+api-version: 1.14
 
 main: io.github.thebusybiscuit.electricspawners.ElectricSpawners

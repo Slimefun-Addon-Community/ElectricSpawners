@@ -9,9 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.CSCoreLibPlugin.general.String.StringUtils;
-import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
 import me.mrCookieSlime.Slimefun.Objects.Category;
@@ -21,20 +19,26 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.UnregisterReason;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.energy.ChargableBlock;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
+import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 public class ElectricSpawner extends SlimefunItem {
 	
 	private static int lifetime = 0;
 	
-	EntityType entity;
+	private final EntityType entity;
 
 	public ElectricSpawner(Category category, String mob, EntityType type, Research research) throws Exception {
-		super(category, new CustomItem(CustomSkull.getItem("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGI2YmQ5NzI3YWJiNTVkNTQxNTI2NTc4OWQ0ZjI5ODQ3ODFhMzQzYzY4ZGNhZjU3ZjU1NGE1ZTlhYTFjZCJ9fX0="), "&ePowered Spawner &7(" + StringUtils.format(mob) + ")", "", "&8\u21E8 &e\u26A1 &7Max Entity Cap: 6", "&8\u21E8 &e\u26A1 &7512 J Buffer", "&8\u21E8 &e\u26A1 &7240 J/Mob"), "ELECTRIC_SPAWNER_" + mob, RecipeType.ENHANCED_CRAFTING_TABLE, 
-		new ItemStack[] {null, SlimefunItems.PLUTONIUM, null, SlimefunItems.ELECTRIC_MOTOR, new CustomItem(Material.SPAWNER, "&bReinforced Spawner", "&7Type: &b" + StringUtils.format(type.toString())), SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.ANDROID_MEMORY_CORE, SlimefunItems.BLISTERING_INGOT_3});
+		super(category, new SlimefunItemStack("ELECTRIC_SPAWNER_" + mob, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGI2YmQ5NzI3YWJiNTVkNTQxNTI2NTc4OWQ0ZjI5ODQ3ODFhMzQzYzY4ZGNhZjU3ZjU1NGE1ZTlhYTFjZCJ9fX0=", "&ePowered Spawner &7(" + StringUtils.format(mob) + ")", "", "&8\u21E8 &e\u26A1 &7Max Entity Cap: 6", "&8\u21E8 &e\u26A1 &7512 J Buffer", "&8\u21E8 &e\u26A1 &7240 J/Mob"), RecipeType.ENHANCED_CRAFTING_TABLE, 
+		new ItemStack[] {
+				null, SlimefunItems.PLUTONIUM, null, 
+				SlimefunItems.ELECTRIC_MOTOR, new CustomItem(Material.SPAWNER, "&bReinforced Spawner", "&7Type: &b" + StringUtils.format(type.toString())), SlimefunItems.ELECTRIC_MOTOR, 
+				SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.ANDROID_MEMORY_CORE, SlimefunItems.BLISTERING_INGOT_3
+		});
 		
 		this.entity = type;
 		
@@ -48,7 +52,6 @@ public class ElectricSpawner extends SlimefunItem {
 			
 			@Override
 			public boolean onBreak(Player p, Block b, SlimefunItem item, UnregisterReason reason) {
-				SpawnerHologram.remove(b);
 				return true;
 			}
 		});
@@ -65,7 +68,7 @@ public class ElectricSpawner extends SlimefunItem {
 			}
 
 			@Override
-			public void newInstance(final BlockMenu menu, final Block b) {
+			public void newInstance(BlockMenu menu, Block b) {
 				if (!BlockStorage.hasBlockInfo(b) || BlockStorage.getLocationInfo(b.getLocation(), "enabled") == null || BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals("false")) {
 					menu.replaceExistingItem(4, new CustomItem(Material.GUNPOWDER, "&7Enabled: &4\u2718", "", "&e> Click to enable this Machine"));
 					menu.addMenuClickHandler(4, (p, slot, item, action) -> {
@@ -109,11 +112,7 @@ public class ElectricSpawner extends SlimefunItem {
 			
 			@Override
 			public void tick(Block b, SlimefunItem sf, Config data) {
-				try {
-					ElectricSpawner.this.tick(b);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				ElectricSpawner.this.tick(b);
 			}
 
 			@Override
@@ -125,18 +124,19 @@ public class ElectricSpawner extends SlimefunItem {
 			public boolean isSynchronized() {
 				return true;
 			}
+			
 		});
 
 		super.register(slimefun);
 	}
 	
-	protected void tick(Block b) throws Exception {
+	protected void tick(Block b) {
 		if (BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals("false")) return;
 		if (lifetime % 3 != 0) return;
 		if (ChargableBlock.getCharge(b) < getEnergyConsumption()) return;
 		
 		int count = 0;
-		for (Entity n: SpawnerHologram.getNearbyEntities(b, 4)) {
+		for (Entity n : b.getWorld().getNearbyEntities(b.getLocation(), 4.0, 4.0, 4.0)) {
 			if (n.getType().equals(this.entity)) {
 				count++;
 				if (count > 6) return;
