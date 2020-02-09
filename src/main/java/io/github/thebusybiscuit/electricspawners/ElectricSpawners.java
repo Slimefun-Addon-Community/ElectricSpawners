@@ -2,6 +2,7 @@ package io.github.thebusybiscuit.electricspawners;
 
 import java.util.logging.Level;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,7 +24,7 @@ public class ElectricSpawners extends JavaPlugin implements Listener {
 		Config cfg = new Config(this);
 		
 		// Setting up bStats
-		new Metrics(this);
+		new Metrics(this, 6163);
 		
 		if (getDescription().getVersion().startsWith("DEV - ")) {
 			Updater updater = new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/ElectricSpawners/master");
@@ -32,8 +33,8 @@ public class ElectricSpawners extends JavaPlugin implements Listener {
 			if (cfg.getBoolean("options.auto-update")) updater.start();
 		}
 		
-		Category category = new Category(new CustomItem(SkullItem.fromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGI2YmQ5NzI3YWJiNTVkNTQxNTI2NTc4OWQ0ZjI5ODQ3ODFhMzQzYzY4ZGNhZjU3ZjU1NGE1ZTlhYTFjZCJ9fX0="), "&9Electric Spawners", "", "&a> Click to open"));
-		Research research = new Research(4820, "Powered Spawners", 30);
+		Category category = new Category(new NamespacedKey(this, "electric_spawners"), new CustomItem(SkullItem.fromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGI2YmQ5NzI3YWJiNTVkNTQxNTI2NTc4OWQ0ZjI5ODQ3ODFhMzQzYzY4ZGNhZjU3ZjU1NGE1ZTlhYTFjZCJ9fX0="), "&9Electric Spawners"));
+		Research research = new Research(new NamespacedKey(this, "electric_spawners"), 4820, "Powered Spawners", 30);
 		
 		for (String mob : cfg.getStringList("mobs")) {
 			try {
