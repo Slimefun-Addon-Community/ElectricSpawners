@@ -7,6 +7,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.Research;
 import me.mrCookieSlime.Slimefun.api.Slimefun;
@@ -17,7 +18,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.Updater;
 
-public class ElectricSpawners extends JavaPlugin implements Listener {
+public class ElectricSpawners extends JavaPlugin implements Listener, SlimefunAddon {
 	
 	@Override
 	public void onEnable() {
@@ -46,5 +47,15 @@ public class ElectricSpawners extends JavaPlugin implements Listener {
 		}
 		
 		Slimefun.registerResearch(research);
+	}
+
+	@Override
+	public JavaPlugin getJavaPlugin() {
+		return this;
+	}
+
+	@Override
+	public String getBugTrackerURL() {
+		return "https://github.com/TheBusyBiscuit/ElectricSpawners/issues";
 	}
 }

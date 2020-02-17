@@ -15,6 +15,7 @@ import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.Research;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunBlockHandler;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SimpleSlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.UnregisterReason;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
@@ -26,7 +27,7 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
-public class ElectricSpawner extends SlimefunItem {
+public class ElectricSpawner extends SimpleSlimefunItem<BlockTicker> {
 	
 	private static int lifetime = 0;
 	
@@ -105,10 +106,26 @@ public class ElectricSpawner extends SlimefunItem {
 		return 240;
 	}
 	
-	
+	protected void tick(Block b) {
+		if (BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals("false")) return;
+		if (lifetime % 3 != 0) return;
+		if (ChargableBlock.getCharge(b) < getEnergyConsumption()) return;
+		
+		int count = 0;
+		for (Entity n : b.getWorld().getNearbyEntities(b.getLocation(), 4.0, 4.0, 4.0)) {
+			if (n.getType().equals(this.entity)) {
+				count++;
+				if (count > 6) return;
+			}
+		}
+		
+		ChargableBlock.addCharge(b, -getEnergyConsumption());
+		b.getWorld().spawnEntity(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.5D, b.getZ() + 0.5D), this.entity);
+	}
+
 	@Override
-	public void register(boolean slimefun) {
-		addItemHandler(new BlockTicker() {
+	public BlockTicker getItemHandler() {
+		return new BlockTicker() {
 			
 			@Override
 			public void tick(Block b, SlimefunItem sf, Config data) {
@@ -125,26 +142,7 @@ public class ElectricSpawner extends SlimefunItem {
 				return true;
 			}
 			
-		});
-
-		super.register(slimefun);
-	}
-	
-	protected void tick(Block b) {
-		if (BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals("false")) return;
-		if (lifetime % 3 != 0) return;
-		if (ChargableBlock.getCharge(b) < getEnergyConsumption()) return;
-		
-		int count = 0;
-		for (Entity n : b.getWorld().getNearbyEntities(b.getLocation(), 4.0, 4.0, 4.0)) {
-			if (n.getType().equals(this.entity)) {
-				count++;
-				if (count > 6) return;
-			}
-		}
-		
-		ChargableBlock.addCharge(b, -getEnergyConsumption());
-		b.getWorld().spawnEntity(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.5D, b.getZ() + 0.5D), this.entity);
+		};
 	}
 
 }
