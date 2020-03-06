@@ -8,6 +8,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
+import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.String.StringUtils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -27,7 +29,7 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
-public class ElectricSpawner extends SimpleSlimefunItem<BlockTicker> {
+public class ElectricSpawner extends SimpleSlimefunItem<BlockTicker> implements EnergyNetComponent {
 	
 	private static int lifetime = 0;
 	
@@ -144,5 +146,15 @@ public class ElectricSpawner extends SimpleSlimefunItem<BlockTicker> {
 			
 		};
 	}
+
+    @Override
+    public int getCapacity() {
+        return 2048;
+    }
+
+    @Override
+    public EnergyNetComponentType getEnergyComponentType() {
+        return EnergyNetComponentType.CONSUMER;
+    }
 
 }
