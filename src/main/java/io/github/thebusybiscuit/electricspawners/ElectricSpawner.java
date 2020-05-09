@@ -30,17 +30,18 @@ import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 public class ElectricSpawner extends SimpleSlimefunItem<BlockTicker> implements EnergyNetComponent {
-	
+
+    private static final int ENERGY_CONSUMPTION = 240;
 	private static int lifetime = 0;
 	
 	private final EntityType entity;
 
 	public ElectricSpawner(Category category, String mob, EntityType type, Research research) throws Exception {
-		super(category, new SlimefunItemStack("ELECTRIC_SPAWNER_" + mob, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGI2YmQ5NzI3YWJiNTVkNTQxNTI2NTc4OWQ0ZjI5ODQ3ODFhMzQzYzY4ZGNhZjU3ZjU1NGE1ZTlhYTFjZCJ9fX0=", "&ePowered Spawner &7(" + StringUtils.format(mob) + ")", "", "&8\u21E8 &e\u26A1 &7Max Entity Cap: 6", "&8\u21E8 &e\u26A1 &7512 J Buffer", "&8\u21E8 &e\u26A1 &7240 J/Mob"), RecipeType.ENHANCED_CRAFTING_TABLE, 
+		super(category, new SlimefunItemStack("ELECTRIC_SPAWNER_" + mob, "db6bd9727abb55d5415265789d4f2984781a343c68dcaf57f554a5e9aa1cd", "&ePowered Spawner &7(" + StringUtils.format(mob) + ")", "", "&8\u21E8 &e\u26A1 &7Max Entity Cap: 6", "&8\u21E8 &e\u26A1 &7512 J Buffer", "&8\u21E8 &e\u26A1 &7240 J/Mob"), RecipeType.ENHANCED_CRAFTING_TABLE, 
 		new ItemStack[] {
 				null, SlimefunItems.PLUTONIUM, null, 
 				SlimefunItems.ELECTRIC_MOTOR, new CustomItem(Material.SPAWNER, "&bReinforced Spawner", "&7Type: &b" + StringUtils.format(type.toString())), SlimefunItems.ELECTRIC_MOTOR, 
-				SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.ANDROID_MEMORY_CORE, SlimefunItems.BLISTERING_INGOT_3
+				SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.LARGE_CAPACITOR, SlimefunItems.BLISTERING_INGOT_3
 		});
 		
 		this.entity = type;
@@ -105,7 +106,7 @@ public class ElectricSpawner extends SimpleSlimefunItem<BlockTicker> implements 
 	}
 	
 	public int getEnergyConsumption() {
-		return 240;
+		return ENERGY_CONSUMPTION;
 	}
 	
 	protected void tick(Block b) {

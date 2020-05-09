@@ -10,7 +10,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.Research;
-import me.mrCookieSlime.Slimefun.api.Slimefun;
 import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
@@ -34,7 +33,7 @@ public class ElectricSpawners extends JavaPlugin implements Listener, SlimefunAd
             if (cfg.getBoolean("options.auto-update")) updater.start();
         }
 
-        Category category = new Category(new NamespacedKey(this, "electric_spawners"), new CustomItem(SkullItem.fromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGI2YmQ5NzI3YWJiNTVkNTQxNTI2NTc4OWQ0ZjI5ODQ3ODFhMzQzYzY4ZGNhZjU3ZjU1NGE1ZTlhYTFjZCJ9fX0="), "&9Electric Spawners"));
+        Category category = new Category(new NamespacedKey(this, "electric_spawners"), new CustomItem(SkullItem.fromBase64("db6bd9727abb55d5415265789d4f2984781a343c68dcaf57f554a5e9aa1cd"), "&9Electric Spawners"));
         Research research = new Research(new NamespacedKey(this, "electric_spawners"), 4820, "Powered Spawners", 30);
 
         for (String mob : cfg.getStringList("mobs")) {
@@ -43,11 +42,11 @@ public class ElectricSpawners extends JavaPlugin implements Listener, SlimefunAd
                 new ElectricSpawner(category, mob, type, research).register(this);
             }
             catch (Exception x) {
-                getLogger().log(Level.SEVERE, "An Error has occured while adding an Electric Spawner for the EntityType \"" + mob + "\"", x);
+                getLogger().log(Level.SEVERE, x, () -> "An Error has occured while adding an Electric Spawner for the EntityType \"" + mob + "\"");
             }
         }
 
-        Slimefun.registerResearch(research);
+        research.register();
     }
 
     @Override
