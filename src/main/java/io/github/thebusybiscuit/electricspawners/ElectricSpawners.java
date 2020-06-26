@@ -30,7 +30,9 @@ public class ElectricSpawners extends JavaPlugin implements Listener, SlimefunAd
             Updater updater = new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/ElectricSpawners/master");
 
             // Only run the Updater if it has not been disabled
-            if (cfg.getBoolean("options.auto-update")) updater.start();
+            if (cfg.getBoolean("options.auto-update")) {
+                updater.start();
+            }
         }
 
         Category category = new Category(new NamespacedKey(this, "electric_spawners"), new CustomItem(SkullItem.fromHash("db6bd9727abb55d5415265789d4f2984781a343c68dcaf57f554a5e9aa1cd"), "&9Electric Spawners"));
@@ -40,6 +42,9 @@ public class ElectricSpawners extends JavaPlugin implements Listener, SlimefunAd
             try {
                 EntityType type = EntityType.valueOf(mob);
                 new ElectricSpawner(category, mob, type, research).register(this);
+            }
+            catch (IllegalArgumentException x) {
+                getLogger().log(Level.WARNING, "An Error has occured while adding an Electric Spawner for the (posibly outdated or invalid) EntityType \"{0}\"", mob);
             }
             catch (Exception x) {
                 getLogger().log(Level.SEVERE, x, () -> "An Error has occured while adding an Electric Spawner for the EntityType \"" + mob + "\"");

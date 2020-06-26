@@ -36,7 +36,7 @@ public class ElectricSpawner extends SimpleSlimefunItem<BlockTicker> implements 
 	
 	private final EntityType entity;
 
-	public ElectricSpawner(Category category, String mob, EntityType type, Research research) throws Exception {
+	public ElectricSpawner(Category category, String mob, EntityType type, Research research) {
 		super(category, new SlimefunItemStack("ELECTRIC_SPAWNER_" + mob, "db6bd9727abb55d5415265789d4f2984781a343c68dcaf57f554a5e9aa1cd", "&ePowered Spawner &7(" + StringUtils.format(mob) + ")", "", "&8\u21E8 &e\u26A1 &7Max Entity Cap: 6", "&8\u21E8 &e\u26A1 &7512 J Buffer", "&8\u21E8 &e\u26A1 &7240 J/Mob"), RecipeType.ENHANCED_CRAFTING_TABLE, 
 		new ItemStack[] {
 				null, SlimefunItems.PLUTONIUM, null, 
@@ -110,15 +110,26 @@ public class ElectricSpawner extends SimpleSlimefunItem<BlockTicker> implements 
 	}
 	
 	protected void tick(Block b) {
-		if (BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals("false")) return;
-		if (lifetime % 3 != 0) return;
-		if (ChargableBlock.getCharge(b) < getEnergyConsumption()) return;
+        if (lifetime % 3 != 0) {
+            return;
+        }
+        
+		if (BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals("false")) {
+		    return;
+		}
+		
+		if (ChargableBlock.getCharge(b) < getEnergyConsumption()) {
+		    return;
+		}
 		
 		int count = 0;
 		for (Entity n : b.getWorld().getNearbyEntities(b.getLocation(), 4.0, 4.0, 4.0)) {
 			if (n.getType().equals(this.entity)) {
 				count++;
-				if (count > 6) return;
+				
+				if (count > 6) {
+				    return;
+				}
 			}
 		}
 		
