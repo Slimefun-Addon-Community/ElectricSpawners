@@ -42,11 +42,9 @@ public class ElectricSpawners extends JavaPlugin implements Listener, SlimefunAd
             try {
                 EntityType type = EntityType.valueOf(mob);
                 new ElectricSpawner(category, mob, type, research).register(this);
-            }
-            catch (IllegalArgumentException x) {
+            } catch (IllegalArgumentException x) {
                 getLogger().log(Level.WARNING, "An Error has occured while adding an Electric Spawner for the (posibly outdated or invalid) EntityType \"{0}\"", mob);
-            }
-            catch (Exception x) {
+            } catch (Exception x) {
                 getLogger().log(Level.SEVERE, x, () -> "An Error has occured while adding an Electric Spawner for the EntityType \"" + mob + "\"");
             }
         }

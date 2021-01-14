@@ -43,7 +43,7 @@ public class ElectricSpawner extends SimpleSlimefunItem<BlockTicker> implements 
 
         addItemHandler(onBlockPlace());
 
-        new BlockMenuPreset(getID(), "&cPowered Spawner") {
+        new BlockMenuPreset(getId(), "&cPowered Spawner") {
 
             @Override
             public void init() {
@@ -63,8 +63,7 @@ public class ElectricSpawner extends SimpleSlimefunItem<BlockTicker> implements 
                         newInstance(menu, b);
                         return false;
                     });
-                }
-                else {
+                } else {
                     menu.replaceExistingItem(4, new CustomItem(Material.REDSTONE, "&7Enabled: &2\u2714", "", "&e> Click to disable this Machine"));
                     menu.addMenuClickHandler(4, (p, slot, item, action) -> {
                         BlockStorage.addBlockInfo(b, "enabled", "false");
