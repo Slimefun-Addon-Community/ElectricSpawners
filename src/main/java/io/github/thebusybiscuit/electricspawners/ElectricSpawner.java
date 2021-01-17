@@ -15,8 +15,8 @@ import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponen
 import io.github.thebusybiscuit.slimefun4.core.researching.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
+import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.CSCoreLibPlugin.general.String.StringUtils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -36,8 +36,19 @@ public class ElectricSpawner extends SimpleSlimefunItem<BlockTicker> implements 
     private final EntityType entity;
 
     public ElectricSpawner(Category category, String mob, EntityType type, Research research) {
-        super(category, new SlimefunItemStack("ELECTRIC_SPAWNER_" + mob, "db6bd9727abb55d5415265789d4f2984781a343c68dcaf57f554a5e9aa1cd", "&ePowered Spawner &7(" + StringUtils.format(mob)
-                + ")", "", "&8\u21E8 &e\u26A1 &7Max Entity Cap: 6", "&8\u21E8 &e\u26A1 &7512 J Buffer", "&8\u21E8 &e\u26A1 &7240 J/Mob"), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] { null, SlimefunItems.PLUTONIUM, null, SlimefunItems.ELECTRIC_MOTOR, new CustomItem(Material.SPAWNER, "&bReinforced Spawner", "&7Type: &b" + StringUtils.format(type.toString())), SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.LARGE_CAPACITOR, SlimefunItems.BLISTERING_INGOT_3 });
+        // @formatter:off
+        super(category, new SlimefunItemStack("ELECTRIC_SPAWNER_" + mob, "db6bd9727abb55d5415265789d4f2984781a343c68dcaf57f554a5e9aa1cd", 
+                "&ePowered Spawner &7(" + ChatUtils.humanize(mob) + ")",
+                "",
+                "&8\u21E8 &e\u26A1 &7Max Entity Cap: 6",
+                "&8\u21E8 &e\u26A1 &7512 J Buffer",
+                "&8\u21E8 &e\u26A1 &7240 J/Mob"
+        ), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] { 
+                null, SlimefunItems.PLUTONIUM, null, 
+                SlimefunItems.ELECTRIC_MOTOR, new CustomItem(Material.SPAWNER, "&bReinforced Spawner", "&7Type: &b" + ChatUtils.humanize(type.toString())), SlimefunItems.ELECTRIC_MOTOR, 
+                SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.LARGE_CAPACITOR, SlimefunItems.BLISTERING_INGOT_3
+        });
+        // @formatter:on
 
         this.entity = type;
 
